@@ -6,6 +6,7 @@
 //
 
 import RxSwift
+import RxCocoa
 import SwiftyJSON
 import UIKit
 
@@ -28,11 +29,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var editView: UITextView!
     
+    let button = UIButton()
+    let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             self?.timerLabel.text = "\(Date().timeIntervalSince1970)"
         }
+        
+        button.rx.tap
+            .subscribe(onNext: {
+                print("Button clicked!")
+            })
+            .disposed(by: disposeBag)
     }
 
     private func setVisibleWithAnimation(_ v: UIView?, _ s: Bool) {
